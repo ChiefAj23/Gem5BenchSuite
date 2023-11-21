@@ -1,0 +1,6 @@
+Benchmark bodytrack with size simsmall
+                	 on 2 TIMING cores at 3GHz
+                	 with MESI_TWO_LEVEL cache
+                	 with L1 size 32kB and L1 assoc 4
+                	 and L2 size 256kB and L2 assoc 8 and L2 banks 1
+                	 and memory size 3GB

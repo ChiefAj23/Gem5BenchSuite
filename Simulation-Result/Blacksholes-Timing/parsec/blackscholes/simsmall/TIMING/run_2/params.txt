@@ -1,0 +1,6 @@
+Benchmark blackscholes with size simsmall
+                	 on 2 TIMING cores at 3GHz
+                	 with PRIVATE_L1_SHARED_L2 cache
+                	 with L1 size 32kB and L1 assoc 8
+                	 and L2 size 256kB and L2 assoc 16 and L2 banks 1
+                	 and memory size 3GB
