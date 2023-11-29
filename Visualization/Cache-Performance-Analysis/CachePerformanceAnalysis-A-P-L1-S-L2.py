@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 
-# Given data from the user's image
+# Data from the simulation stats.txt file
 data = {
     'Cache': ['L1 Data Cache', 'L1 Instruction Cache', 'L2 Cache']*4,
     'Program': ['Blackscholes']*3 + ['Bodytrack']*3 + ['Raytrace']*3 + ['Ferret']*3,

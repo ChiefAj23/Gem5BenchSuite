@@ -1,5 +1,7 @@
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
+
 
 # Performance Analysis Data for Parsec Benchmark Suite using Cache [2,4] Assosiativity
 performance_data = {
@@ -13,28 +15,22 @@ performance_data = {
 # Create a DataFrame
 performance_df = pd.DataFrame(performance_data)
 
-# Plotting
-fig, axes = plt.subplots(4, 1, figsize=(10, 12), tight_layout=False)
-# Sim Time (seconds)
-performance_df.plot(kind='bar', x='Parsec Configuration', y='Sim Time (seconds)', ax=axes[0], legend=False)
-axes[0].set_title('Simulation Time (seconds)')
-axes[0].set_ylabel('Seconds')
-axes[0].set_xticklabels(performance_df['Parsec Configuration'], rotation=45, ha='right')
+# Improved plotting
+colors = plt.cm.Dark2(np.linspace(0.5, 0.75, len(performance_df)))
 
-# Sim Tics (Tick)
-performance_df.plot(kind='bar', x='Parsec Configuration', y='Sim Tics (Tick)', ax=axes[1], legend=False)
-axes[1].set_title('Simulation Tics (Tick)')
-axes[1].set_ylabel('Tics')
+# Separate plots for each metric
+for i, column in enumerate(performance_df.columns[1:]):
+    fig, ax = plt.subplots(figsize=(10, 6))
+    bars = ax.bar(performance_df['Parsec Configuration'], performance_df[column], color=colors)
+    ax.set_title(column.replace('_', ' ').title())
+    ax.set_xlabel('Parsec Configuration')
+    ax.set_ylabel(column.split(' ')[0].title())
+    ax.set_xticklabels(performance_df['Parsec Configuration'], rotation=45, ha='right')
 
-# Host Seconds (seconds)
-performance_df.plot(kind='bar', x='Parsec Configuration', y='Host Seconds (seconds)', ax=axes[2], legend=False)
-axes[2].set_title('Host Seconds (seconds)')
-axes[2].set_ylabel('Seconds')
+    # Add data labels
+    for bar in bars:
+        yval = bar.get_height()
+        ax.text(bar.get_x() + bar.get_width()/2, yval, round(yval, 2), va='bottom', ha='center', color='black')
 
-# Total Wallclock Time (minutes)
-performance_df.plot(kind='bar', x='Parsec Configuration', y='Total Wallclock Time (minutes)', ax=axes[3], legend=False)
-axes[3].set_title('Total Wallclock Time (minutes)')
-axes[3].set_ylabel('Minutes')
-
-# Show the plot
-plt.show()
+    plt.tight_layout()
+    plt.show()

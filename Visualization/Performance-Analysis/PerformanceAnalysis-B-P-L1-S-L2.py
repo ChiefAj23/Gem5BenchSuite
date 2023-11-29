@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 
 # Performance Analysis Data for Parsec Benchmark Suite using Cache [4,8] Associativity
@@ -10,51 +11,25 @@ performance_data = {
     'Total Wallclock Time (minutes)': [10.63, 63.94, 120.83, 175.75]
 }
 
-
 # Create a DataFrame
 performance_df = pd.DataFrame(performance_data)
 
-# Plotting with improved aesthetics
-fig, axes = plt.subplots(4, 1, figsize=(12, 18))
+# Improved plotting
+colors = plt.cm.Dark2(np.linspace(0.5, 0.75, len(performance_df)))
 
-# Define colors for the plots
-colors = ['skyblue', 'orange', 'green', 'red']
+# Separate plots for each metric
+for i, column in enumerate(performance_df.columns[1:]):
+    fig, ax = plt.subplots(figsize=(10, 6))
+    bars = ax.bar(performance_df['Parsec Configuration'], performance_df[column], color=colors)
+    ax.set_title(column.replace('_', ' ').title())
+    ax.set_xlabel('Parsec Configuration')
+    ax.set_ylabel(column.split(' ')[0].title())
+    ax.set_xticklabels(performance_df['Parsec Configuration'], rotation=45, ha='right')
 
-# Sim Time (seconds)
-performance_df.plot(kind='bar', x='Parsec Configuration', y='Sim Time (seconds)', ax=axes[0], legend=False, color=colors[0])
-axes[0].set_title('Simulation Time (seconds)', fontsize=14)
-axes[0].set_ylabel('Seconds', fontsize=12)
-axes[0].set_xticklabels(performance_df['Parsec Configuration'], rotation=45, ha='right')
-axes[0].tick_params(axis='x', labelsize=10)
-axes[0].tick_params(axis='y', labelsize=10)
-axes[0].grid(axis='y', linestyle='--', alpha=0.7)
+    # Add data labels
+    for bar in bars:
+        yval = bar.get_height()
+        ax.text(bar.get_x() + bar.get_width()/2, yval, round(yval, 2), va='bottom', ha='center', color='black')
 
-# Sim Tics (Tick)
-performance_df.plot(kind='bar', x='Parsec Configuration', y='Sim Tics (Tick)', ax=axes[1], legend=False, color=colors[1])
-axes[1].set_title('Simulation Tics (Tick)', fontsize=14)
-axes[1].set_ylabel('Tics', fontsize=12)
-axes[1].tick_params(axis='x', labelsize=10)
-axes[1].tick_params(axis='y', labelsize=10)
-axes[1].grid(axis='y', linestyle='--', alpha=0.7)
-
-# Host Seconds (seconds)
-performance_df.plot(kind='bar', x='Parsec Configuration', y='Host Seconds (seconds)', ax=axes[2], legend=False, color=colors[2])
-axes[2].set_title('Host Seconds (seconds)', fontsize=14)
-axes[2].set_ylabel('Seconds', fontsize=12)
-axes[2].tick_params(axis='x', labelsize=10)
-axes[2].tick_params(axis='y', labelsize=10)
-axes[2].grid(axis='y', linestyle='--', alpha=0.7)
-
-# Total Wallclock Time (minutes)
-performance_df.plot(kind='bar', x='Parsec Configuration', y='Total Wallclock Time (minutes)', ax=axes[3], legend=False, color=colors[3])
-axes[3].set_title('Total Wallclock Time (minutes)', fontsize=14)
-axes[3].set_ylabel('Minutes', fontsize=12)
-axes[3].tick_params(axis='x', labelsize=10)
-axes[3].tick_params(axis='y', labelsize=10)
-axes[3].grid(axis='y', linestyle='--', alpha=0.7)
-
-# Adjust layout to prevent overlap and ensure labels are readable
-fig.tight_layout()
-
-# Show the plot
-plt.show()
+    plt.tight_layout()
+    plt.show()
